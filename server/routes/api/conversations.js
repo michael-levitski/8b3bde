@@ -3,6 +3,35 @@ const { User, Conversation, Message } = require("../../db/models");
 const { Op } = require("sequelize");
 const onlineUsers = require("../../onlineUsers");
 
+router.put("/:conversationId/messages", async (req, res, next) => {
+  try {
+    const { isRead } = req.body;
+
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+
+    if (!req.query.senderId || isRead == undefined) {
+      return res.sendStatus(400);
+    }
+
+    await Message.update(
+      { isRead }, 
+      {
+        where: {
+          conversationId: req.params.conversationId,
+          senderId: req.query.senderId,
+          isRead: false
+        }
+      }
+    );
+    res.sendStatus(204);
+
+  } catch (error) {
+    next(error);
+  }
+})
+
 // get all conversations for a user, include latest message text for preview, and all messages
 // include other user model so we have info on username/profile pic (don't include current user info)
 router.get("/", async (req, res, next) => {
