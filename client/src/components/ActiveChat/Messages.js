@@ -6,10 +6,17 @@ import { readMessages } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 
 const Messages = (props) => {
-  const { messages, otherUser, userId, conversationId, readMessages } = props;
+  const { 
+    messages,
+    otherUser,
+    userId,
+    conversationId,
+    readMessages,
+    readReceiptLocation
+  } = props;
 
   React.useEffect(() => {
-    if (conversationId){
+    if (conversationId) {
       const otherUserId = otherUser.id;
       readMessages({ conversationId, senderId: otherUserId });
     }
@@ -21,9 +28,21 @@ const Messages = (props) => {
         const time = moment(message.createdAt).format("h:mm");
 
         return message.senderId === userId ? (
-          <SenderBubble key={message.id} text={message.text} time={time} />
-        ) : (
-          <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />
+          <SenderBubble
+            key={message.id}
+            message={message}
+            time={time}
+            otherUser={otherUser}
+            readReceiptLocation={readReceiptLocation}
+            />
+            ) : (
+              <OtherUserBubble
+              key={message.id}
+              message={message}
+              time={time}
+              otherUser={otherUser}
+              readReceiptLocation={readReceiptLocation}
+          />
         );
       })}
     </Box>
