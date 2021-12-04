@@ -99,6 +99,17 @@ router.get("/", async (req, res, next) => {
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
       convoJSON.messages.reverse();
+
+      convoJSON.ownUnreadMessages = [];
+      convoJSON.otherUnreadMessages = [];
+      for (let i = 0; i < convoJSON.messages.length; ++i) {
+        const message = convoJSON.messages[i];
+        if (message.isRead) continue;
+        const { id } = message;
+        if (message.senderId === userId) convoJSON.ownUnreadMessages.push(id);
+        else convoJSON.otherUnreadMessages.push(id)
+      }
+
       conversations[i] = convoJSON;
     }
 
