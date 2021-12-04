@@ -1,12 +1,14 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
+import FloatingReadReceipt from "./FloatingReadReceipt";
 
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
+    marginBottom: 10
   },
   date: {
     fontSize: 11,
@@ -29,13 +31,18 @@ const useStyles = makeStyles(() => ({
 
 const SenderBubble = (props) => {
   const classes = useStyles();
-  const { time, text } = props;
+  const { time, message, otherUser, readReceiptLocation } = props;
   return (
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
       <Box className={classes.bubble}>
-        <Typography className={classes.text}>{text}</Typography>
+        <Typography className={classes.text}>{message.text}</Typography>
       </Box>
+      <FloatingReadReceipt
+        otherUser={otherUser}
+        messageId={message.id}
+        readReceiptLocation={readReceiptLocation}
+      />
     </Box>
   );
 };
