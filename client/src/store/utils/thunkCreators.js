@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setMessagesAsRead
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -16,6 +17,19 @@ axios.interceptors.request.use(async function (config) {
 });
 
 // USER THUNK CREATORS
+
+export const readMessages = (data) => async (dispatch) => {
+  try {
+    const { conversationId, senderId } = data;
+    const urlPath = `/api/conversations/${conversationId}/messages`;
+    const queryParams = `?senderId=${senderId}`;
+    await axios.put(urlPath + queryParams, {isRead: true});
+    socket.emit("read-messages", data);
+    dispatch(setMessagesAsRead(data));
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export const fetchUser = () => async (dispatch) => {
   dispatch(setFetchingStatus(true));
