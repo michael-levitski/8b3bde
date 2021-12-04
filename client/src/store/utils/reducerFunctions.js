@@ -7,6 +7,12 @@ export const readMessagesInStore = (state, payload) => {
         if (message.senderId !== senderId) return message;
         return {...message, isRead: true};
       });
+
+      if (senderId === convo.otherUser.id) {
+        convoCopy.ownUnreadMessages = [];
+      } else {
+        convoCopy.otherUnreadMessages = [];
+      }
       return convoCopy;
     } else {
       return convo;
@@ -22,6 +28,8 @@ export const addMessageToStore = (state, payload) => {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      ownUnreadMessages: [message.id],
+      otherUnreadMessages: []
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -32,6 +40,14 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
+
+      if (message.senderId === convo.otherUser.id) {
+        console.log("1");
+        convoCopy.ownUnreadMessages = [...convo.ownUnreadMessages, message.id];
+      } else {
+        convoCopy.otherUnreadMessages = [...convo.otherUnreadMessages, message.id];
+      }
+
       return {...convoCopy};
     } else {
       return convo;
@@ -75,7 +91,12 @@ export const addSearchedUsersToStore = (state, users) => {
   users.forEach((user) => {
     // only create a fake convo if we don't already have a convo with this user
     if (!currentUsers[user.id]) {
-      let fakeConvo = { otherUser: user, messages: [] };
+      let fakeConvo = { 
+        otherUser: user,
+        messages: [],
+        ownUnreadMessages: [],
+        otherUnreadMessages: []
+      };
       newState.push(fakeConvo);
     }
   });
@@ -90,6 +111,14 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       convoCopy.id = message.conversationId;
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
+
+      if (recipientId === convo.otherUser.id) {
+        convoCopy.otherUnreadMessages = [...convo.otherUnreadMessages, message.id];
+      } else {
+        console.log(2);
+        convoCopy.ownUnreadMessages = [...convo.ownUnreadMessages, message.id];
+      }
+      
       return convoCopy;
     } else {
       return convo;
