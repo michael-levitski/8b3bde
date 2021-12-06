@@ -100,19 +100,18 @@ router.get("/", async (req, res, next) => {
       convoJSON.latestMessageText = convoJSON.messages[0].text;
       convoJSON.messages.reverse();
 
-      convoJSON.ownUnreadMessages = [];
-      convoJSON.otherUnreadMessages = [];
+      convoJSON.currentUserUnreadCount = 0;
+      convoJSON.otherUserUnreadCount = 0;
       for (let i = 0; i < convoJSON.messages.length; ++i) {
         const message = convoJSON.messages[i];
         if (message.isRead) continue;
-        const { id } = message;
-        if (message.senderId === userId) convoJSON.ownUnreadMessages.push(id);
-        else convoJSON.otherUnreadMessages.push(id)
+        if (message.senderId === userId) convoJSON.otherUserUnreadCount += 1;
+        else convoJSON.currentUserUnreadCount += 1;
       }
 
       conversations[i] = convoJSON;
     }
-
+    
     res.json(conversations);
   } catch (error) {
     next(error);
