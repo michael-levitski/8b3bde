@@ -2,12 +2,6 @@ import React from "react";
 import { Box, Typography, Chip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const previewTextStyle = {
-  fontSize: 12,
-  color: "#9CADC8",
-  letterSpacing: -0.17,
-}
-
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -19,33 +13,29 @@ const useStyles = makeStyles(() => ({
     fontWeight: "bold",
     letterSpacing: -0.2,
   },
-  unreadPreviewText: {
-    ...previewTextStyle,
-    color: "black",
-    fontWeight: "bold"
-  },
-  readPreviewText: {
-    ...previewTextStyle
-  },
   unreadMessageCount: {
     marginRight: 20,
     alignSelf: "center"
-  }
+  },
+  previewText: (currentUserUnreadCount) => ({
+    fontSize: 12,
+    letterSpacing: -0.17,
+    color: currentUserUnreadCount ? "black" : "#9CADC8",
+    fontWeight: currentUserUnreadCount ? "bold" : "inherit"
+  })
 }));
 
 const ChatContent = (props) => {
-  const classes = useStyles();
-
   const { conversation } = props;
   const { latestMessageText, otherUser, currentUserUnreadCount } = conversation;
-
+  const classes = useStyles(currentUserUnreadCount);
   return (
     <Box className={classes.root}>
       <Box>
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={currentUserUnreadCount ? classes.unreadPreviewText: classes.readPreviewText}>
+        <Typography className={classes.previewText}>
           {latestMessageText}
         </Typography>
       </Box>
