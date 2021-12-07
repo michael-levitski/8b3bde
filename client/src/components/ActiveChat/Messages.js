@@ -8,9 +8,7 @@ const Messages = (props) => {
 
   return (
     <Box>
-      {messages.map((_, i) => {
-        const index = messages.length - 1 - i;
-        const message = messages[index];
+      {messages.map((message) => {
         const time = moment(message.createdAt).format("h:mm");
 
         return message.senderId === userId ? (
