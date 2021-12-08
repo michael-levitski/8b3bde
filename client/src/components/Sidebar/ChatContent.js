@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Chip } from "@material-ui/core";
+import { Box, Typography, Badge } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     letterSpacing: -0.2,
   },
   unreadMessageCount: {
-    marginRight: 20,
+    marginRight: 33,
     alignSelf: "center"
   },
   previewText: (currentUserUnreadCount) => ({
@@ -40,12 +40,12 @@ const ChatContent = (props) => {
         </Typography>
       </Box>
       {!!currentUserUnreadCount &&
-        <Chip
+        <Badge
           className={classes.unreadMessageCount}
-          label={currentUserUnreadCount}
+          badgeContent={currentUserUnreadCount}
           color="primary"
-          size="small"
-        />}
+        />
+      }
     </Box>
   );
 };
