@@ -5,9 +5,11 @@ const onlineUsers = require("../../onlineUsers");
 
 router.put("/:conversationId/messages", async (req, res, next) => {
   try {
+    const { user } = req;
     const { isRead } = req.body;
+    const { conversationId } = req.params;
 
-    if (!req.user) {
+    if (!user) {
       return res.sendStatus(401);
     }
 
@@ -15,11 +17,26 @@ router.put("/:conversationId/messages", async (req, res, next) => {
       return res.sendStatus(400);
     }
 
+    const conversation = await Conversation.findOne({
+      where: { id: conversationId }
+    });
+
+    if (!conversation) {
+      return res.sendStatus(400);
+    }
+
+    const { user1Id, user2Id } = conversation;
+    const { id } = user;
+
+    if (user1Id !== id && user2Id !== id) {
+      return res.sendStatus(401); 
+    }
+
     await Message.update(
       { isRead }, 
       {
         where: {
-          conversationId: req.params.conversationId,
+          conversationId,
           senderId: req.query.senderId,
           isRead: false
         }
