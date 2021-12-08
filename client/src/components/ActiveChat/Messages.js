@@ -20,7 +20,7 @@ const Messages = (props) => {
       const otherUserId = otherUser.id;
       readMessages({ conversationId, senderId: otherUserId });
     }
-  }, [messages.length]);
+  }, [messages.length, conversationId, otherUser.id, readMessages]);
 
   return (
     <Box>
