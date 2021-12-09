@@ -23,8 +23,7 @@ export const readMessagesInStore = (state, payload) => {
       for (let i = lastMessageIndex; i >= 0; --i) {
         const message = messages[i];
         if (message.senderId === convo.otherUser.id) {
-          convoCopy.readReceiptLocation = message.id;
-          break;
+          continue;
         }
         if (numOwnMessagesSkipped < otherUserUnreadCount) {
           ++numOwnMessagesSkipped;

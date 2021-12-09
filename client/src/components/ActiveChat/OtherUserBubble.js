@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, Avatar } from "@material-ui/core";
-import FloatingReadReceipt from "./FloatingReadReceipt";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -30,19 +29,19 @@ const useStyles = makeStyles(() => ({
     color: "#FFFFFF",
     letterSpacing: -0.2,
     padding: 8
-  },
-  readReceipt: {
-    marginLeft: "auto",
-    alignSelf: "end"
   }
 }));
 
 const OtherUserBubble = (props) => {
   const classes = useStyles();
-  const { message, time, otherUser, readReceiptLocation } = props;
+  const { message, time, otherUser } = props;
   return (
     <Box className={classes.root}>
-      <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
+      <Avatar
+        alt={otherUser.username}
+        src={otherUser.photoUrl}
+        className={classes.avatar}
+      />
       <Box>
         <Typography className={classes.usernameDate}>
           {otherUser.username} {time}
@@ -50,13 +49,6 @@ const OtherUserBubble = (props) => {
         <Box className={classes.bubble}>
           <Typography className={classes.text}>{message.text}</Typography>
         </Box>
-      </Box>
-      <Box className={classes.readReceipt}>
-        <FloatingReadReceipt
-          otherUser={otherUser}
-          messageId={message.id}
-          readReceiptLocation={readReceiptLocation}
-        />
       </Box>
     </Box>
   );
