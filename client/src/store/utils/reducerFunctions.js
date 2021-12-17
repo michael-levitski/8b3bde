@@ -1,3 +1,15 @@
+export const setTypingStatusInStore = (state, payload) => {
+  const { conversationId, otherUserIsTyping } = payload;
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      const convoCopy = { ...convo, otherUserIsTyping };
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  })
+}
+
 export const readMessagesInStore = (state, payload) => {
   const { conversationId, senderId } = payload;
   return state.map((convo) => {
@@ -49,7 +61,8 @@ export const addMessageToStore = (state, payload) => {
       messages: [message],
       currentUserUnreadCount: 1,
       otherUserUnreadCount: 0,
-      readReceiptLocation: -1
+      readReceiptLocation: -1,
+      otherUserIsTyping: false
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -114,7 +127,8 @@ export const addSearchedUsersToStore = (state, users) => {
         messages: [],
         currentUserUnreadCount: 0,
         otherUserUnreadCount: 0,
-        readReceiptLocation: -1
+        readReceiptLocation: -1,
+        otherUserIsTyping: false
       };
       newState.push(fakeConvo);
     }
