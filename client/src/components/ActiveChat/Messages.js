@@ -12,7 +12,8 @@ const Messages = (props) => {
     userId,
     conversationId,
     readMessages,
-    readReceiptLocation
+    readReceiptLocation,
+    otherUserIsTyping
   } = props;
 
   React.useEffect(() => {
@@ -36,15 +37,16 @@ const Messages = (props) => {
             readReceiptLocation={readReceiptLocation}
             />
             ) : (
-              <OtherUserBubble
+            <OtherUserBubble
               key={message.id}
               message={message}
               time={time}
               otherUser={otherUser}
-              readReceiptLocation={readReceiptLocation}
-          />
+            />
         );
       })}
+      {otherUserIsTyping &&
+        <OtherUserBubble otherUser={otherUser} isTyping />}
     </Box>
   );
 };
