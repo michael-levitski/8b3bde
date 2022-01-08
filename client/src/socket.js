@@ -4,13 +4,18 @@ import {
   setNewMessage,
   removeOfflineUser,
   addOnlineUser,
-  setMessagesAsRead
+  setMessagesAsRead,
+  setTypingStatus,
 } from "./store/conversations";
 
 const socket = io(window.location.origin);
 
 socket.on("connect", () => {
   console.log("connected to server");
+
+  socket.on("set-typing-status", (data) => {
+    store.dispatch(setTypingStatus(data));
+  });
 
   socket.on("read-messages", (data) => {
     store.dispatch(setMessagesAsRead(data));

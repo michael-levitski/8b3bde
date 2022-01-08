@@ -40,6 +40,7 @@ const ActiveChat = (props) => {
               userId={user.id}
               conversationId={conversation.id}
               readReceiptLocation={conversation.readReceiptLocation}
+              otherUserIsTyping={conversation.otherUserIsTyping}
             />
             <Input
               otherUser={conversation.otherUser}

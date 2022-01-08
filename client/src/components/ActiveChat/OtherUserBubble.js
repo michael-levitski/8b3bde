@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, Avatar } from "@material-ui/core";
+import TypingBubbleContents from "./TypingBubbleContents";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() => ({
 
 const OtherUserBubble = (props) => {
   const classes = useStyles();
-  const { message, time, otherUser } = props;
+  const { message, time, otherUser, isTyping } = props;
   return (
     <Box className={classes.root}>
       <Avatar
@@ -44,10 +45,13 @@ const OtherUserBubble = (props) => {
       />
       <Box>
         <Typography className={classes.usernameDate}>
-          {otherUser.username} {time}
+          {otherUser.username} {!isTyping && time}
         </Typography>
         <Box className={classes.bubble}>
-          <Typography className={classes.text}>{message.text}</Typography>
+          {isTyping?
+            <TypingBubbleContents />:
+            <Typography className={classes.text}>{message.text}</Typography>
+          }
         </Box>
       </Box>
     </Box>

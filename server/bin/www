@@ -33,6 +33,10 @@ const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
 
+  socket.on("set-typing-status", (data) => {
+    socket.broadcast.emit("set-typing-status", data);
+  });
+
   socket.on("read-messages", (data) => {
     socket.broadcast.emit("read-messages", data);
   });

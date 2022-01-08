@@ -119,6 +119,7 @@ router.get("/", async (req, res, next) => {
 
       convoJSON.currentUserUnreadCount = 0;
       convoJSON.otherUserUnreadCount = 0;
+      convoJSON.otherUserIsTyping = false;
       for (let i = 0; i < convoJSON.messages.length; ++i) {
         const message = convoJSON.messages[i];
         if (message.isRead) continue;
